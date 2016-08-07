@@ -55,8 +55,7 @@ namespace ImprovedChaseCamera
 		void Start()
 		{
 			LoadConfig ();	
-			//snapIVARotation = InternalCamera.Instance.camera.transform.localRotation;
-			
+			//snapIVARotation = InternalCamera.Instance.camera.transform.localRotation;			
 		}
 		
 
@@ -70,8 +69,7 @@ namespace ImprovedChaseCamera
 			{
 				adjustLook=false;	
 			}
-			
-			
+						
 			if(InternalCamera.Instance!=null && InternalCamera.Instance.isActive)  //checking if camera is IVA
 			{
 				if(!isIVA){isIVA = true;}
@@ -79,7 +77,6 @@ namespace ImprovedChaseCamera
 			else
 			{
 				if(isIVA){isIVA = false;}
-
 			}
 			
 			#region Chase(locked) mode
@@ -100,8 +97,7 @@ namespace ImprovedChaseCamera
 				{	
 					lerpRate = 1;
 				}
-			
-					
+								
 				if(adjustLook)
 				{
 					snapHeading = FlightCamera.fetch.camHdg - (0 - pitchAngleQ.Roll());
@@ -170,10 +166,7 @@ namespace ImprovedChaseCamera
 				enableChase = false;
 			}
 			#endregion
-			
-			
-			
-			
+												
 			#region Free chase mode
 			if(FlightCamera.fetch.mode == FlightCamera.Modes.FREE && !MapView.MapIsEnabled && !FlightGlobals.ActiveVessel.isEVA)
 			{
@@ -190,9 +183,6 @@ namespace ImprovedChaseCamera
 				lookVector = rollAdjust * lookVector;
 				
 				Quaternion viewAngleQ = Quaternion.FromToRotation (forwardVector, lookVector);
-				
-				
-				
 				
 				if(defaultOn && defaultFiredMode != "FREE")
 				{
@@ -235,8 +225,6 @@ namespace ImprovedChaseCamera
 						snapPitch = defaultAngle*Mathf.Deg2Rad;
 						//FlightCamera.fetch.SetFoV(setFov);
 						timeCheck = Time.time;
-
-
 					}
 					enableFreeChase = !enableFreeChase;
 				}
@@ -379,7 +367,7 @@ namespace ImprovedChaseCamera
 			MoI = vessel.findLocalMOI(CoM);
 			up = (CoM - vessel.mainBody.position).normalized;
 				
-		     // Vector3d north = Vector3.Exclude(up, (vessel.mainBody.position + vessel.mainBody.transform.up * (float)vessel.mainBody.Radius) - CoM).normalized;
+		  // Vector3d north = Vector3.Exclude(up, (vessel.mainBody.position + vessel.mainBody.transform.up * (float)vessel.mainBody.Radius) - CoM).normalized;
 			Vector3d north = Vector3.ProjectOnPlane((vessel.mainBody.position + vessel.mainBody.transform.up * (float)vessel.mainBody.Radius) - CoM, up).normalized;
 			rotationSurface = Quaternion.LookRotation(north, up);
 			rotationVesselSurface = Quaternion.Inverse(Quaternion.Euler(90, 0, 0) * Quaternion.Inverse(vessel.transform.rotation) * rotationSurface);
@@ -435,12 +423,7 @@ namespace ImprovedChaseCamera
 			{
 				print ("Error loading config file:  " + e.ToString());	
 			}
-		}
-		
-		
-		
-		
-		
+		}		
 	}
 }
 

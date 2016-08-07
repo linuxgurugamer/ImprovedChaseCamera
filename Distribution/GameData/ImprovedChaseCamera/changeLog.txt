@@ -1,0 +1,54 @@
+v1.6.1 (first version published by Papa_Joe)
+- KSP 1.1.3 compatibility
+- Change of authors.  Restructured mod to fit standard mod distribution structure
+- Restructured solution to automate build, deploy and distribution.
+- Cleaned up code to enforce strict typing.
+
+ This mod was created by and is copyright Paolo Encarnacion (BahamutoD)
+ Portions of this Mod are modified by Joe Korinek (Papa_Joe) to ensure continued functionality for its original purpose.
+
+v1.6.0 (last version published by BahamutoD)
+- KSP 1.1 compatibility
+
+v1.5.1
+ - Fixed autoSnap feature for LOCKED mode
+
+v1.5.0
+ - KSP 1.0+ compatibility
+ - Changed CHASE mode to LOCKED mode
+ - Disabled setFOV (now a stock feature)
+ - Disabled by default
+ - Removed experimental mouse control
+ - Added appropriate License file to ensure license compliance.
+
+v1.4.0
+ - 0.24 update
+ - fixed weird snapping when rotating view
+
+
+v1.3.1
+ - Added config value for disabling the "Auto" camera (requested)
+ - Added config value for automatically snapping camera to default
+       angle (like the old behavior)
+ - Attempt to improve vtol mode
+ - Added experimental mouse control (Right-alt while ICC is enabled)
+
+v1.3
+ - Changed default toggle key to Tab
+ - Toggle key now configurable
+ - Default view angle now configurable
+ - Free chase view doesn't snap back to default view when moved(toggle off-on to reset)
+ - Disabled during EVA (it's glitchy)
+ - Field of view is configurable
+ - Fixed: Free chase camera was jerky during high-G turns
+ - Fixed screen messages
+ - Set as enabled by default (configurable)
+
+v1.2
+ - Changed behavior in free chase mode when forward velocity is less than 50m/s to make it work better with VTOLs
+
+v1.1
+ - Added free chase mode
+
+v1.0
+ - Released improved chase mode.

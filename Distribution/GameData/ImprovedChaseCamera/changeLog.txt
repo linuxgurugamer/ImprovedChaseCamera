@@ -1,6 +1,7 @@
 v1.6.2 Long Lost Update!
 - Recompiled for KSP 1.4.x compatibility 
 - updated code for vessle worldCOM and vessel localMOI changes in KSP structure.
+- Added KSP-AVC support (version file added)
 
 v1.6.1 (first version published by Papa_Joe)
 - KSP 1.1.3 compatibility

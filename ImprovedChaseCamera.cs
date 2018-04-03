@@ -363,8 +363,8 @@ namespace ImprovedChaseCamera
 			Quaternion rotationSurface;
 			Quaternion rotationVesselSurface;
 		
-			CoM = vessel.findWorldCenterOfMass();
-			MoI = vessel.findLocalMOI(CoM);
+			CoM = vessel.CoM;
+			MoI = vessel.MOI;
 			up = (CoM - vessel.mainBody.position).normalized;
 				
 		  // Vector3d north = Vector3.Exclude(up, (vessel.mainBody.position + vessel.mainBody.transform.up * (float)vessel.mainBody.Radius) - CoM).normalized;

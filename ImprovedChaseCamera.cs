@@ -39,22 +39,25 @@ namespace ImprovedChaseCamera
 		public bool enableIVASnap = false;
 		
 		private string defaultFiredMode = "AUTO"; //detecting current camera mode
-		
-		
-		//Messages
-		private ScreenMessage chaseOn = new ScreenMessage("Improved Chase Cam ON", 5, ScreenMessageStyle.UPPER_CENTER);
+	  private static string _settingsPath;
+	  private static string _settingsFile;
+	  private ConfigNode _settings;
+
+    //Messages
+    private ScreenMessage chaseOn = new ScreenMessage("Improved Chase Cam ON", 5, ScreenMessageStyle.UPPER_CENTER);
 		private ScreenMessage chaseOff = new ScreenMessage("Improved Chase Cam OFF", 5, ScreenMessageStyle.UPPER_CENTER);
 		private ScreenMessage freeChaseOn = new ScreenMessage("Improved Free Chase Cam ON", 5, ScreenMessageStyle.UPPER_CENTER);
 		private ScreenMessage freeChaseOff = new ScreenMessage("Improved Free Chase Cam OFF", 5, ScreenMessageStyle.UPPER_CENTER);
 		private ScreenMessage msgMouseJoyOn = new ScreenMessage("Mouse Control On", 5, ScreenMessageStyle.UPPER_CENTER);
 		private ScreenMessage msgMouseJoyOff = new ScreenMessage("Mouse Control Off", 5, ScreenMessageStyle.UPPER_CENTER);
-
-
 		
 		
 		void Start()
 		{
-			LoadConfig ();	
+		  // Debug.Log("ImprovedChaseCamera:Start");
+		  _settingsPath = $"{KSPUtil.ApplicationRootPath}GameData/ImprovedChaseCamera/Plugins/PluginData";
+		  _settingsFile = $"{_settingsPath}/settings.cfg";
+			LoadConfig();	
 			//snapIVARotation = InternalCamera.Instance.camera.transform.localRotation;			
 		}
 		
@@ -87,17 +90,10 @@ namespace ImprovedChaseCamera
 				
 				Vector3 forwardVector = new Vector3(0f, 1f, 0f);
 				Quaternion pitchAngleQ = Quaternion.FromToRotation(forwardVector, lookVector);
+
 				//float lerpRate = Mathf.Clamp((float) FlightGlobals.ActiveVessel.srf_velocity.magnitude / 50f, 0f, 1f);
-				float lerpRate;
-				if(Time.time - timeCheck < 2)
-				{
-					lerpRate = 0.1f;
-				}
-				else
-				{	
-					lerpRate = 1;
-				}
-								
+			  float lerpRate = Time.time - timeCheck < 2 ? 0.1f : 1;
+
 				if(adjustLook)
 				{
 					snapHeading = FlightCamera.fetch.camHdg - (0 - pitchAngleQ.Roll());
@@ -379,10 +375,14 @@ namespace ImprovedChaseCamera
 		
 		private void LoadConfig()
 		{
+		  Debug.Log("[Improved Chase Camera]: loading configuration...");
 			try
-			{
-				foreach(ConfigNode cfg in GameDatabase.Instance.GetConfigNodes("ImprovedChaseCameraConfig"))
+      {
+        _settings = ConfigNode.Load(_settingsFile) ?? new ConfigNode();
+
+        foreach (ConfigNode cfg in _settings.GetNodes("ImprovedChaseCameraConfig"))
 				{
+          Debug.Log("[Improved Chase Camera]: Found configuration...");
 					if(cfg.HasNode("ENABLE_CHASE"))
 					{
 						ENABLE_CHASE.Load(cfg.GetNode("ENABLE_CHASE"));
@@ -421,9 +421,11 @@ namespace ImprovedChaseCamera
 			}
 			catch(Exception e)
 			{
-				print ("Error loading config file:  " + e.ToString());	
+			  Debug.Log("[Improved Chase Camera]: Error loading configuration...");
+				print("Error loading config file:  " + e.ToString());	
 			}
-		}		
-	}
+		  Debug.Log("[Improved Chase Camera]: completed loading configuration...");
+		}
+  }
 }
 

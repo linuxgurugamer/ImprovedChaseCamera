@@ -1,3 +1,7 @@
+v1.6.2.1 Long Lost Update!
+- Fixed hotkey reassignment in config file not working.  Git Issue #1
+- minor cosmetic refactoring (no functional changes)
+
 v1.6.2 Long Lost Update!
 - Recompiled for KSP 1.4.x compatibility 
 - updated code for vessle worldCOM and vessel localMOI changes in KSP structure.

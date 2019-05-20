@@ -96,9 +96,11 @@ namespace ImprovedChaseCamera
 
 				if(adjustLook)
 				{
-					snapHeading = FlightCamera.fetch.camHdg - (0 - pitchAngleQ.Roll());
-					snapPitch = FlightCamera.fetch.camPitch - (0 + pitchAngleQ.Pitch());
-				}
+                    snapHeading = FlightCamera.fetch.camHdg - (0 - getRoll(pitchAngleQ));//pitchAngleQ.Roll());
+
+                    snapPitch = FlightCamera.fetch.camPitch - (0 + getPitch(pitchAngleQ));//pitchAngleQ.Pitch());
+
+                }
 				
 				if(defaultOn && defaultFiredMode != "CHASE")
 				{
@@ -147,11 +149,10 @@ namespace ImprovedChaseCamera
 				
 				if(enableChase && FlightGlobals.ActiveVessel != null && !adjustLook) //runs continuously while in chase cam on an active vessel when not adjusting look angle
 				{
-					
-					if(FlightGlobals.ActiveVessel.srf_velocity.magnitude>0.5){
-						targetPitch = (0 + pitchAngleQ.Pitch() + snapPitch);
+                    if (FlightGlobals.ActiveVessel.srf_velocity.magnitude>0.5){
+						targetPitch = (0 + getPitch(pitchAngleQ)/*pitchAngleQ.Pitch()*/ + snapPitch);
 						FlightCamera.fetch.camPitch = Mathf.Lerp(FlightCamera.fetch.camPitch, targetPitch, lerpRate);
-						targetHeading = (0 - pitchAngleQ.Roll() + snapHeading);
+						targetHeading = (0 - getRoll(pitchAngleQ)/* pitchAngleQ.Roll()*/ + snapHeading);
 						FlightCamera.fetch.camHdg = Mathf.Lerp(FlightCamera.fetch.camHdg, targetHeading, lerpRate);
 					}
 				}
@@ -233,13 +234,13 @@ namespace ImprovedChaseCamera
 
 						if(!vtolMode)
 						{
-							snapPitch =  FlightCamera.fetch.camPitch - (0-pitchRads + (1f*viewAngleQ.Pitch ())); //adjusted
-							snapHeading = FlightCamera.fetch.camHdg - (headingRads - (1f*viewAngleQ.Roll())); //adjusted
+							snapPitch =  FlightCamera.fetch.camPitch - (0-pitchRads + (1f*getPitch(viewAngleQ)/*viewAngleQ.Pitch()*/)); //adjusted
+							snapHeading = FlightCamera.fetch.camHdg - (headingRads - (1f*getRoll(viewAngleQ)/*viewAngleQ.Roll()*/)); //adjusted
 						}
 						else
 						{
-							snapPitch = FlightCamera.fetch.camPitch - (0 + Mathf.Clamp ( viewAngleQ.Pitch ()/10, 0, 90f));
-							snapHeading = FlightCamera.fetch.camHdg - (headingRads - (viewAngleQ.Roll()/10));
+							snapPitch = FlightCamera.fetch.camPitch - (0 + Mathf.Clamp (getPitch(viewAngleQ)/*viewAngleQ.Pitch()*// 10, 0, 90f));
+							snapHeading = FlightCamera.fetch.camHdg - (headingRads - (getRoll(viewAngleQ)/*viewAngleQ.Roll()*//10));
 						}
 						if(Mathf.Abs ( snapHeading) < 5*Mathf.Deg2Rad)  //snap heading straight if close enough
 						{
@@ -274,14 +275,14 @@ namespace ImprovedChaseCamera
 						{
 							if(!vtolMode){vtolMode = true;}
 							lerpRate = 0.1f;
-							FlightCamera.fetch.camPitch = Mathf.LerpAngle(FlightCamera.fetch.camPitch, (0 + Mathf.Clamp ( viewAngleQ.Pitch ()/10, 0, 90f) + snapPitch), lerpRate); 
-							FlightCamera.fetch.camHdg = (Mathf.LerpAngle(FlightCamera.fetch.camHdg * Mathf.Rad2Deg, ((headingRads - (viewAngleQ.Roll()/10) + snapHeading) * Mathf.Rad2Deg), lerpRate)) * Mathf.Deg2Rad;
+							FlightCamera.fetch.camPitch = Mathf.LerpAngle(FlightCamera.fetch.camPitch, (0 + Mathf.Clamp ( getPitch(viewAngleQ)/*viewAngleQ.Pitch()*//10, 0, 90f) + snapPitch), lerpRate); 
+							FlightCamera.fetch.camHdg = (Mathf.LerpAngle(FlightCamera.fetch.camHdg * Mathf.Rad2Deg, ((headingRads - (getRoll(viewAngleQ)/*viewAngleQ.Roll()*//10) + snapHeading) * Mathf.Rad2Deg), lerpRate)) * Mathf.Deg2Rad;
 						}
 						else
 						{
 							if(vtolMode){vtolMode = false;}
-							FlightCamera.fetch.camPitch = Mathf.LerpAngle(FlightCamera.fetch.camPitch, 0-pitchRads + viewAngleQ.Pitch () + snapPitch, lerpRate);  //doesn't really need to be LerpAngle unless converted to degrees.
-							FlightCamera.fetch.camHdg = (Mathf.LerpAngle(FlightCamera.fetch.camHdg * Mathf.Rad2Deg, (headingRads - viewAngleQ.Roll() + snapHeading) * Mathf.Rad2Deg, lerpRate)) * Mathf.Deg2Rad;
+							FlightCamera.fetch.camPitch = Mathf.LerpAngle(FlightCamera.fetch.camPitch, 0-pitchRads + getPitch(viewAngleQ)/*viewAngleQ.Pitch()*/ + snapPitch, lerpRate);  //doesn't really need to be LerpAngle unless converted to degrees.
+							FlightCamera.fetch.camHdg = (Mathf.LerpAngle(FlightCamera.fetch.camHdg * Mathf.Rad2Deg, (headingRads - getRoll(viewAngleQ)/*viewAngleQ.Roll()*/ + snapHeading) * Mathf.Rad2Deg, lerpRate)) * Mathf.Deg2Rad;
 						}
 					}
 					
@@ -426,6 +427,16 @@ namespace ImprovedChaseCamera
 			}
 		  Debug.Log("[Improved Chase Camera]: completed loading configuration...");
 		}
-  }
+
+        float getRoll(Quaternion q)
+        {
+            return Mathf.Atan2(2 * q.y * q.w - 2 * q.x * q.z, 1 - 2 * q.y * q.y - 2 * q.z * q.z);
+        }
+
+        float getPitch(Quaternion q)
+        {
+            return Mathf.Atan2(2 * q.x * q.w - 2 * q.y * q.z, 1 - 2 * q.x * q.x - 2 * q.z * q.z);
+        }
+    }
 }
 

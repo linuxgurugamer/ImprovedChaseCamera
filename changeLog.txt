@@ -5,6 +5,7 @@
 	version updated with new version info and new repo info
 	Added InstallChecker.cs
 	Added AssemblyVersion.tt
+	Made changes to use the ExtendedKeyInput mode
 
 v1.6.2.1 Long Lost Update!
 - Fixed hotkey reassignment in config file not working.  Git Issue #1

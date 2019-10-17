@@ -7,9 +7,14 @@ namespace ImprovedChaseCamera
     [KSPAddon(KSPAddon.Startup.Flight, false)]
     public class ImprovedChaseCamera : MonoBehaviour
     {
-        public static KeyBinding ENABLE_CHASE = new KeyBinding(KeyCode.Tab);
-        public static KeyBinding ADJUST_LOOK = new KeyBinding(KeyCode.Mouse1);
-        public static KeyBinding SET_IVA_SNAP = new KeyBinding(KeyCode.KeypadEnter);
+        //public static KeyBinding ENABLE_CHASE = new KeyBinding(KeyCode.Tab);
+        //public static KeyBinding ADJUST_LOOK = new KeyBinding(KeyCode.Mouse1);
+        //public static KeyBinding SET_IVA_SNAP = new KeyBinding(KeyCode.KeypadEnter);
+
+        public static KeyCodeExtended ENABLE_CHASE = new KeyCodeExtended(KeyCode.Tab);
+        public static KeyCodeExtended ADJUST_LOOK = new KeyCodeExtended(KeyCode.Mouse1);
+        public static KeyCodeExtended SET_IVA_SNAP = new KeyCodeExtended(KeyCode.KeypadEnter);
+
         public bool adjustLook = false;
         public bool adjustLookIVA = false;
 
@@ -74,11 +79,11 @@ namespace ImprovedChaseCamera
 
         void Update()
         {
-            if (ADJUST_LOOK.GetKeyDown())
+            if (ExtendedInput.GetKeyDown(ADJUST_LOOK))
             {
                 adjustLook = true;
             }
-            if (ADJUST_LOOK.GetKeyUp())
+            if (ExtendedInput.GetKeyUp(ADJUST_LOOK))
             {
                 adjustLook = false;
             }
@@ -128,8 +133,7 @@ namespace ImprovedChaseCamera
                     snapPitch = defaultAngle * Mathf.Deg2Rad;
                     //FlightCamera.fetch.SetFoV(setFov);
                 }
-
-                if (ENABLE_CHASE.GetKeyDown())
+                if (ExtendedInput.GetKeyDown(ENABLE_CHASE))
                 {
                     if (enableChase)
                     {
@@ -209,7 +213,7 @@ namespace ImprovedChaseCamera
                     timeCheck = Time.time;
                 }
 
-                if (ENABLE_CHASE.GetKeyDown())
+                if (ExtendedInput.GetKeyDown(ENABLE_CHASE))
                 {
                     if (enableFreeChase)
                     {
@@ -398,7 +402,9 @@ namespace ImprovedChaseCamera
                     Debug.Log("[Improved Chase Camera]: Found configuration...");
                     if (cfg.HasNode("ENABLE_CHASE"))
                     {
-                        ENABLE_CHASE.Load(cfg.GetNode("ENABLE_CHASE"));
+                        KeyBinding ec = new KeyBinding(KeyCode.Tab);
+                        ec.Load(cfg.GetNode("ENABLE_CHASE"));                        
+                        ENABLE_CHASE = ec.primary;
                     }
                     if (cfg.HasValue("defaultAngle"))
                     {
@@ -424,7 +430,7 @@ namespace ImprovedChaseCamera
                     }
                     if (cfg.HasNode("SET_IVA_SNAP"))
                     {
-                        SET_IVA_SNAP.Load(cfg.GetNode("SET_IVA_SNAP"));
+                        //SET_IVA_SNAP.Load(cfg.GetNode("SET_IVA_SNAP"));
                     }
                     if (cfg.HasValue("enableIVASnap"))
                     {

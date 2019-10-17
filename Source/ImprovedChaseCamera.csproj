@@ -49,25 +49,22 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="KSPAssets">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\KSPAssets.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>R:\KSP_1.7.3_dev\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine">
+      <HintPath>R:\KSP_1.7.3_dev\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyVersion.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyVersion.tt</DependentUpon>
+    </Compile>
     <Compile Include="ImprovedChaseCamera.cs" />
+    <Compile Include="InstallChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +80,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AssemblyVersion.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyVersion.cs</LastGenOutput>
+    </Content>
     <Content Include="Distribution\GameData\ImprovedChaseCamera\ChangeLog.txt" />
     <Content Include="Distribution\GameData\ImprovedChaseCamera\License.txt" />
     <Content Include="Distribution\GameData\ImprovedChaseCamera\Plugins\ImprovedChaseCamera.dll" />
@@ -96,37 +97,26 @@
     <None Include="Distribution\GameData\ImprovedChaseCamera\ImprovedChaseCamera.version" />
     <None Include="Distribution\GameData\ImprovedChaseCamera\Plugins\PluginData\settings.cfg" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>@echo $(Targetname)
-@echo ...
-@echo set lpath vars from LocalDev storage...
-set /p KSP_DIR=&lt;"$(ProjectDir)LocalDev\ksp_dir.txt"
-set /p PDB2MDB_EXE=&lt;"$(ProjectDir)LocalDev\pdb2mdb_exe.txt"
-set /p ZA_DIR=&lt;"$(ProjectDir)LocalDev\7za_dir.txt"
-set /p DIST_DIR=&lt;"$(ProjectDir)LocalDev\dist_dir.txt"
+    <PostBuildEvent>start /D D:\Users\jbb\github\ImprovedChaseCamera /WAIT deploy.bat  $(TargetDir) $(TargetFileName)
 
-@echo distributing $(Targetname) files for packaging and deploy...
-copy /Y "$(TargetPath)" "$(ProjectDir)Distribution\GameData\$(Targetname)\Plugins\"
+if $(ConfigurationName) == Release (
 
-@echo building $(Targetname).dll.mdb file...
-cd "$(TargetDir)"
-call "%25PDB2MDB_EXE%25" $(Targetname).dll
+	start /D D:\Users\jbb\github\ImprovedChaseCamera /WAIT buildRelease.bat $(TargetDir) $(TargetFileName)
 
-xcopy /E /Y "$(TargetDir)$(Targetname).dll.mdb" "%25KSP_DIR%25\GameData\$(Targetname)\Plugins\"
-
-@echo packaging files...
-if exist "E:\KSP\Mods\PJS\Releases\$(Targetname)\Build\$(Targetname)*.zip" del "E:\KSP\Mods\PJS\Releases\$(Targetname)\Build\$(Targetname)*.zip"
-call "%25ZA_DIR%25\7za.exe" a -tzip -r  "%25DIST_DIR%25\$(Targetname).@(VersionNumber)_%25DATE:~4,2%25%25DATE:~7,2%25%25DATE:~10,4%25.zip" "$(ProjectDir)Distribution\*.*"
-
-@echo Deploy $(Targetname) Distribution files to test env:  %25KSP_DIR%25\GameData\$(ProjectName)...
-xcopy /E /Y "$(SolutionDir)\Distribution\GameData" "%25KSP_DIR%25\GameData"
-copy /Y "$(TargetDir)$(Targetname).pdb" "%25KSP_DIR%25\GameData\$(Targetname)\Plugins\"
-
-@echo Build/deploy complete!</PostBuildEvent>
+)</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
-    </PreBuildEvent>
+set textTemplatingPath="%25ProgramFiles(x86)%25\Microsoft Visual Studio\2017\Community\Common7\IDE \texttransform.exe"
+
+
+
+
+%25textTemplatingPath%25 "$(ProjectDir)AssemblyVersion.tt"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

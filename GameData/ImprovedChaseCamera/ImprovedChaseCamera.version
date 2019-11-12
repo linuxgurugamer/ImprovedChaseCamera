@@ -1,24 +1,21 @@
 {
-  "NAME":"ImprovedChaseCamera",
+  "NAME": "ImprovedChaseCamera",
   "URL": "http://ksp.spacetux.net/avc/ImprovedChaseCamera",
-  "DOWNLOAD":"https://github.com/linuxgurugamer/ImprovedChaseCamera/releases/latest",
-  "GITHUB":
-  {
-    "USERNAME":"linuxgurugamer",
-    "REPOSITORY":"ImprovedChaseCamera",
-    "ALLOW_PRE_RELEASE":false
+  "DOWNLOAD": "https://github.com/linuxgurugamer/ImprovedChaseCamera/releases/latest",
+  "GITHUB": {
+    "USERNAME": "linuxgurugamer",
+    "REPOSITORY": "ImprovedChaseCamera",
+    "ALLOW_PRE_RELEASE": false
   },
-  "VERSION":
-  {
-    "MAJOR":1,
-    "MINOR":6,
-    "PATCH":3,
-    "BUILD":1
+  "VERSION": {
+    "MAJOR": 1,
+    "MINOR": 6,
+    "PATCH": 4,
+    "BUILD": 0
   },
-  "KSP_VERSION_MIN":
-  {
-    "MAJOR":1,
-    "MINOR":7,
-    "PATCH":3
+  "KSP_VERSION_MIN": {
+    "MAJOR": 1,
+    "MINOR": 8,
+    "PATCH": 0
   }
 }

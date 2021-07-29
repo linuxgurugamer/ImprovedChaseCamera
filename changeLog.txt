@@ -1,5 +1,10 @@
 ChangeLog
 
+1.6.4.1
+	Renamed DLL for CKAN compatibility
+	Added AssemblyFileVersion
+	Updated version file for 1.12
+
 1.6.4
 	Updated for KSP 1.8
 

@@ -77,7 +77,7 @@ namespace ImprovedChaseCamera
         }
 
 
-        void Update()
+        void FixedUpdate()
         {
             if (ExtendedInput.GetKeyDown(ADJUST_LOOK))
             {
@@ -106,7 +106,6 @@ namespace ImprovedChaseCamera
                 Vector3 forwardVector = new Vector3(0f, 1f, 0f);
                 Quaternion pitchAngleQ = Quaternion.FromToRotation(forwardVector, lookVector);
 
-                //float lerpRate = Mathf.Clamp((float) FlightGlobals.ActiveVessel.srf_velocity.magnitude / 50f, 0f, 1f);
                 float lerpRate = Time.time - timeCheck < 2 ? 0.1f : 1;
 
                 if (adjustLook)
@@ -174,7 +173,6 @@ namespace ImprovedChaseCamera
             }
             if (FlightCamera.fetch.mode != FlightCamera.Modes.LOCKED && enableChase) //runs once on switching out of chase cam
             {
-                //setCam = false;
                 enableChase = false;
             }
             #endregion
@@ -209,7 +207,6 @@ namespace ImprovedChaseCamera
                     ScreenMessages.PostScreenMessage(freeChaseOn);
                     snapHeading = 0;
                     snapPitch = defaultAngle * Mathf.Deg2Rad;
-                    //FlightCamera.fetch.SetFoV(setFov);
                     timeCheck = Time.time;
                 }
 
@@ -235,7 +232,6 @@ namespace ImprovedChaseCamera
                         ScreenMessages.PostScreenMessage(freeChaseOn);
                         snapHeading = 0;
                         snapPitch = defaultAngle * Mathf.Deg2Rad;
-                        //FlightCamera.fetch.SetFoV(setFov);
                         timeCheck = Time.time;
                     }
                     enableFreeChase = !enableFreeChase;
@@ -410,12 +406,6 @@ namespace ImprovedChaseCamera
                     {
                         defaultAngle = float.Parse(cfg.GetValue("defaultAngle"));
                     }
-                    /*
-					if(cfg.HasValue("setFov"))
-					{
-						setFov = float.Parse(cfg.GetValue ("setFov"));
-					}
-					*/
                     if (cfg.HasValue("defaultOn"))
                     {
                         defaultOn = bool.Parse(cfg.GetValue("defaultOn"));

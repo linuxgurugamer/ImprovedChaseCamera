@@ -1,5 +1,8 @@
 ChangeLog
 
+1.6.4.2 
+	Changed Update to FixedUpdate (slight optimization)
+
 1.6.4.1
 	Renamed DLL for CKAN compatibility
 	Added AssemblyFileVersion

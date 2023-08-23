@@ -77,7 +77,7 @@ namespace ImprovedChaseCamera
         }
 
 
-        void FixedUpdate()
+        void Update()
         {
             if (ExtendedInput.GetKeyDown(ADJUST_LOOK))
             {

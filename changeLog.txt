@@ -1,5 +1,8 @@
 ChangeLog
 
+1.6.4.3
+	Reverted the previous change, was causing response issues
+
 1.6.4.2 
 	Changed Update to FixedUpdate (slight optimization)
 
